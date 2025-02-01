@@ -1,11 +1,15 @@
+import Link from "next/link"
+
 export default function Home() {
   return (
     <div className="w-screen h-screen bg-black text-white flex justify-center items-center">
-      <div className="w-full max-w-[600px]">
-        <h1 className="text-6xl">امروز مودت چطوره؟</h1>
-        <p className="text-2xl text-white/60">ثبت لحظات خوب و بدت رو به ما بسپار</p>
+      <div className="w-full max-w-[600px] mx-auto">
+        <h1 className="text-6xl mb-4">امروز مودت چطوره؟</h1>
+        <p className="text-2xl text-white/60 mb-4">ثبت لحظات خوب و بدت رو به ما بسپار</p>
         <div>
-          <button>شروع کن</button>
+          <Link href="/journal">
+            <button className="bg-blue-600 px-2 py-3 rounded-lg text-lg">شروع کن</button>
+          </Link>
         </div>
       </div>
     </div>
