@@ -1,9 +1,9 @@
-import { getUsers } from '@/actions/user';
+import { getEntries } from '@/actions/entry';
 
 export default async function Page() {
-  const users = await getUsers()
+  const entries = await getEntries()
 
   return (
-    <div>{users}</div>
+    <div>{JSON.stringify(entries)}</div>
   )
 }
