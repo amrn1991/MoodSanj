@@ -6,7 +6,7 @@ export const getUserByClerkID = async (options: any = {}) => {
 
   const user = await prisma.user.findUniqueOrThrow({
     where: { clerkId: userId?.toString() },
-    select: options.select ? options.select : {}
+    // select: options.select ? options.select : {}
   })
 
   return user
