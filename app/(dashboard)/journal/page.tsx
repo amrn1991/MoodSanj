@@ -1,6 +1,7 @@
 import { getEntries } from '@/actions/entry';
 import EntryCard from '@/components/EntryCard';
 import NewEntryCard from '@/components/NewEntryCard';
+import Link from 'next/link';
 
 export default async function Page() {
   const entries = await getEntries()
@@ -12,7 +13,11 @@ export default async function Page() {
         <NewEntryCard />
         {
           entries?.map((entry: any) => {
-            return <EntryCard key={entry.id} entry={entry} />
+            return (
+              <Link href={`/journal/${entry.id}`} key={entry.id}>
+                <EntryCard entry={entry} />    
+              </Link>
+            )
           })
         }
       </div>
