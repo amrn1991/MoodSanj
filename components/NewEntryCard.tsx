@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from "next/navigation"
-import { createNewEntry } from "@/utils/api"
+import { createNewEntry } from "@/actions/entry"
 
 export default function NewEntryCard() {
   const router = useRouter()
