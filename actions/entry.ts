@@ -1,4 +1,5 @@
 
+import { analyze } from "@/utils/ai";
 import { getUserByClerkID } from "@/utils/auth";
 import { prisma } from "@/utils/db";
 
@@ -8,6 +9,8 @@ export async function getEntries() {
     where: { userId: user.id },
     orderBy: { createdAt: 'desc' }
   })
+
+  await analyze(`tell me a random dad joke`)
 
   return entries;
 }
