@@ -10,7 +10,6 @@ export const POST = async () => {
     data: {
       userId: user.id as string,
       content: 'در مورد روزت بنویس'
-      // content: 'tell me about your day!'
     }
   })
 
