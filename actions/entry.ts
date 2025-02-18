@@ -1,4 +1,3 @@
-import { analyze } from "@/utils/ai"
 import { getUserByClerkID } from "@/utils/auth"
 import { prisma } from "@/utils/db"
 
@@ -8,8 +7,6 @@ export async function getEntries() {
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
   })
-
-  await analyze(`today i hurt my knee.`)
 
   return entries
 }

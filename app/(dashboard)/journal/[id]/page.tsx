@@ -7,7 +7,8 @@ const getEntry = async (id: string) => {
   const entry = await prisma.journalEntry.findUnique({
     where: {
       userId_id: { userId: user.id, id },
-    }
+    },
+    include: { analysis: true }
   })
 
   return entry
@@ -15,21 +16,22 @@ const getEntry = async (id: string) => {
 
 export default async function SingleEntry({ params }: any) {
   const { id } = await params;
-  const entry = await getEntry(id);
+  const entry: any = await getEntry(id);
+  const { mood, summary, subject, color, negative } = entry?.analysis;
   const analysisData = [
-    { name: "Summary", value: '' },
-    { name: "Subject", value: '' },
-    { name: "Mood", value: '' },
-    { name: "Negative", value: 'false' },
+    { name: "خلاصه", value: summary },
+    { name: "موضوع", value: subject },
+    { name: "مود", value: mood },
+    { name: "منفی", value: negative ? "True" : "False" },
   ]
 
   return (
-    <div className="w-full h-full grid-cols-3  ">
+    <div className="w-full h-full grid grid-cols-3  ">
       <div className="col-span-2">
         <Editor entry={entry} />
       </div>
       <div className="border-l border-black/10">
-        <div className="bg-blue-300 px-6 py-10">
+        <div className="px-6 py-10" style={{ backgroundColor: color }}>
           <h2 className="text-2xl">آنالیز</h2>
         </div>
         <div>
@@ -38,7 +40,7 @@ export default async function SingleEntry({ params }: any) {
               return (
                 <li key={item.name} className="px-2 py-4 flex items-center justify-between border-b border-t border-black/10">
                   <span className="text-lg font-semibold">{item.name}</span>
-                  <span>{item.title}</span>
+                  <span className="text-left">{item.value}</span>
                 </li>
               )
             })}
