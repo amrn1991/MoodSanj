@@ -6,6 +6,7 @@ export async function getEntries() {
   const entries = await prisma.journalEntry.findMany({
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
+    include: { analysis: true }
   })
 
   return entries
