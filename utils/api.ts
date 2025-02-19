@@ -30,3 +30,18 @@ export async function updateEntry(id: string, { content }: any) {
     throw new Error('Something went wrong on API server!')
   }
 }
+
+export const askQuestion = async (question: any) => {
+  const res = await fetch(
+    new Request(createUrl(`/api/question`), {
+      method: 'POST',
+      body: JSON.stringify({ question }),
+    })
+  )
+
+  if (res.ok) {
+    return res.json()
+  } else {
+    throw new Error('Something went wrong on API server!')
+  }
+}

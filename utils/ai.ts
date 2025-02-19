@@ -1,13 +1,16 @@
 import { TogetherAI } from "@langchain/community/llms/togetherai"
-import { z } from "zod"
-import { StructuredOutputParser } from "langchain/output_parsers"
 import { PromptTemplate } from "@langchain/core/prompts"
+import { StructuredOutputParser } from "langchain/output_parsers"
+import { loadQARefineChain } from 'langchain/chains'
+import { MemoryVectorStore } from 'langchain/vectorstores/memory'
+import { TogetherAIEmbeddings } from "@langchain/community/embeddings/togetherai";
+import { Document } from 'langchain/document'
+import { z } from "zod"
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
     mood: z
       .string()
-      // .describe("the mood of the person who wrote the journal entry."),
       .describe("the mood of the person who wrote the journal entry."),
     subject: z.string().describe("the subject of the journal entry."),
     negative: z
@@ -60,4 +63,30 @@ export const analyze = async (content: any) => {
     return e
   }
 
+}
+
+export const qa = async (question: any, entries: any) => {
+  const docs = entries.map(
+    (entry: any) =>
+      new Document({
+        pageContent: entry.content,
+        metadata: { source: entry.id, date: entry.createdAt },
+      })
+  )
+  const model = new TogetherAI({
+    model: "Qwen/Qwen2-VL-72B-Instruct",
+    maxTokens: 256,
+  })
+  const chain = loadQARefineChain(model)
+  const embeddings = new TogetherAIEmbeddings({
+    model: "togethercomputer/m2-bert-80M-8k-retrieval", // Default value
+  });
+  const store = await MemoryVectorStore.fromDocuments(docs, embeddings)
+  const relevantDocs = await store.similaritySearch(question)
+  const res = await chain.invoke({
+    input_documents: relevantDocs,
+    question,
+  })
+
+  return res.output_text
 }

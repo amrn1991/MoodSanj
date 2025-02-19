@@ -17,13 +17,6 @@ const getEntry = async (id: string) => {
 export default async function SingleEntry({ params }: any) {
   const { id } = await params;
   const entry: any = await getEntry(id);
-  // const { mood, summary, subject, color, negative } = entry?.analysis;
-  // const analysisData = [
-  //   { name: "خلاصه", value: summary },
-  //   { name: "موضوع", value: subject },
-  //   { name: "مود", value: mood },
-  //   { name: "منفی", value: negative ? "بلی" : "خیر" },
-  // ]
 
   return (
     <div className="w-full h-full">
